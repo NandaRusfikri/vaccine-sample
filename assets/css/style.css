@@ -1,0 +1,10 @@
+#bg_auth {
+  height: 100%;
+  background: rgb(7, 2, 88);
+  background: linear-gradient(
+    59deg,
+    rgba(7, 2, 88, 1) 0%,
+    rgba(9, 171, 139, 1) 48%,
+    rgba(7, 2, 88, 1) 100%
+  );
+}
