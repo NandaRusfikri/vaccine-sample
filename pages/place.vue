@@ -125,8 +125,8 @@ export default {
         {
           title: "RSUD Cengkareng",
           desc: "Jakarta Barat, Kecamatan ",
-          target: 9,
-          current: 2
+          target: 40,
+          current: 20
         }
       ],
       periode: ["Daily", "Weekly", "Mouthly", "Year"],
