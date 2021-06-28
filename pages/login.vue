@@ -90,12 +90,21 @@ export default {
       passRules: [v => !!v || "Password wajib diisi"]
     };
   },
-  computed: {
-    theme() {
-      return this.$vuetify.theme.dark ? "dark" : "light";
-    }
+  mounted() {
+
+
+    this.test(2, "four");
   },
+
   methods: {
+    test(d, s) {
+      const ayam = ["one", "two", "three", "four", "five"];
+      for (let i = 1; i < ayam.length; i++) {
+        if (ayam[i] == s) {
+          console.log("hasil",(i+1)*d)
+        }
+      }
+    },
     async Login({ commit }) {
       this.loading = true;
 
@@ -107,7 +116,7 @@ export default {
       }
 
       if (exist == null) {
-         let snackbar = {
+        let snackbar = {
           color: "error",
           message: "NPM tidak ada",
           enabled: true
@@ -162,6 +171,11 @@ export default {
 
       //     this.$store.commit("SET_SNACKBAR", snackbar);
       //   });
+    }
+  },
+  computed: {
+    theme() {
+      return this.$vuetify.theme.dark ? "dark" : "light";
     }
   }
 };

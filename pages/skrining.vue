@@ -151,7 +151,7 @@ export default {
       this.$cookies.set("skrining", this.skrining);
 
       this.loading = false;
-      this.$router.replace("/place");
+      this.$router.replace("/");
     }
   },
 

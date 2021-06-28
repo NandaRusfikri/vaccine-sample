@@ -1,89 +1,216 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
-        <logo />
-        <vuetify-logo />
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
+  <div :style="{ background: $vuetify.theme.themes[theme].background }">
+    <!-- <v-toolbar
+      :style="{ background: $vuetify.theme.themes[theme].background }"
+      flat
+    >
+      <v-toolbar-title
+        @click="$router.push('/')"
+        style="font-family: Comfortaa,sans-serif"
+      >
+        <b>{{ $router.currentRoute.name }}</b></v-toolbar-title
+      >
+    </v-toolbar> -->
+
+
+    <v-row align="center" justify="center">
+
+      <v-col cols="12" md="11" sm="11">
+        <v-card flat class="rounded-lg">
+          <v-toolbar dense flat>
+            <b>Pilih Lokasi Vaksinasi</b>
+            <v-spacer />
+            <v-select
+              style="maxWidth:130px"
+              hide-details
+              outlined
+              :items="periode"
+              dense
+              v-model="selected_periode"
+              single-line
+            ></v-select>
+          </v-toolbar>
+          <v-row class="mx-auto pt-2">
+            <v-col
+              v-for="item in assignment"
+              :key="item.title"
+              cols="12"
+              md="3"
+              sm="3"
             >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+              <v-card hover
+                class="rounded-lg"
+                :color="item.current >= item.target ?   '#FFF1F1' : '#EAEFF1'"
+              >
+                <v-card-subtitle class="pb-0"
+                  ><b>{{ item.title }}</b></v-card-subtitle
+                >
+                <v-card-subtitle class="pt-0">{{ item.desc }}</v-card-subtitle>
+                <v-card-text>
+                  <div class="d-flex " align="center" justify="center">
+                    <v-progress-linear
+                      rounded
+                      class="mr-2"
+                      :color="
+                        item.current >= item.target ? '#FF7C7C' : 'primary'
+                      "
+                      height="12"
+                      :value="(100 / item.target) * item.current"
+                    >
+                      <template v-slot:default="{ value }">
+                        <div style="color:white">
+                          <strong>{{ item.current }}</strong>
+                        </div>
+                      </template></v-progress-linear
+                    >
+                    <span style="font-size:12px"
+                      ><b> {{ Math.ceil((100 / item.target) * item.current) }}% </b></span
+                    >
+                  </div>
+                   <span style="font-size:12px"
+                      >Kuota:  <b>{{ item.target }}/Hari</b></span
+                    >
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+
+
+  </div>
 </template>
-
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
 export default {
-  components: {
-    Logo,
-    VuetifyLogo
+  // middleware({ store, redirect }) {
+  //   if (store.state.user == undefined) {
+  //     return redirect("/login");
+  //   }
+  // },
+  // layout: "home",
+  data() {
+    return {
+      assignment: [
+        {
+          title: "Universitas Pancasila",
+          desc: "Jakarta Selatan, Kecamatan",
+          target: 300,
+          current: 5
+        },
+        {
+          title: "Rs Pertamina Jaya",
+          desc: "Jakarta Pusat, Kecamatan",
+          target: 1000,
+          current: 8
+        },
+        {
+          title: "Kalbis Institute",
+          desc: "Jakarta Timur, Kecamatan",
+          target: 500,
+          current: 400
+        },
+        {
+          title: "RSUD Kemayoran",
+          desc: "Jakarta Pusat, Kecamatan",
+          target: 30,
+          current: 30
+        },
+        {
+          title: "RSUD Kramat Jati",
+          desc: "Jakarta Timur, Kecamatan",
+          target: 320,
+          current: 200
+        },
+        {
+          title: "RSUD Cengkareng",
+          desc: "Jakarta Barat, Kecamatan ",
+          target: 40,
+          current: 20
+        }
+      ],
+      periode: ["Daily", "Weekly", "Mouthly", "Year"],
+      selected_periode: "Daily",
+      dates: ["2021-06-15", "2021-06-20"],
+      summary: [
+        {
+          icon: "mdi-account-multiple",
+          name: "Users",
+          color: "#3377FF",
+          bg_color: "rgba(51, 119, 255, 0.1)",
+          angka: "400"
+        },
+        {
+          icon: "mdi-account-multiple",
+          name: "Prospect",
+          color: "#FCC35B",
+          bg_color: "rgba(252, 195, 91, 0.1)",
+          angka: "300"
+        },
+        {
+          icon: "mdi-account-multiple",
+          name: "Order",
+          color: "#F98DB4",
+          bg_color: "rgba(249, 141, 180, 0.1)",
+          angka: "100"
+        },
+        {
+          icon: "mdi-account-multiple",
+          name: "Booking",
+          color: "#7B6FFF",
+          bg_color: "rgba(123, 111, 255, 0.1)",
+          angka: "200"
+        }
+      ],
+      menus: [
+        { title: "dashboard", to: "/" },
+        {
+          title: "Prospect",
+          to: "/prospect"
+        },
+        { title: "Order", to: "/order" },
+
+        {
+          title: "Import Data",
+          to: "/import"
+        },
+        {
+          title: "Export Data",
+          to: "/export"
+        },
+        {
+          title: "Assignment",
+          to: "/assignment"
+        },
+        {
+          title: "Users",
+          to: "/setting/user"
+        },
+        {
+          title: "Group",
+          to: "/setting/group"
+        },
+        {
+          title: "Permission",
+          to: "/setting/permission"
+        }
+      ]
+    };
+  },
+  computed: {
+    theme() {
+      return this.$vuetify.theme.dark ? "dark" : "light";
+    }
   }
-}
+};
 </script>
+<style scoped>
+.deskripsi {
+  padding: 0.75rem;
+  border: 3px solid black;
+  box-shadow: 0.6rem 0.6rem 0 #222;
+  border-radius: 0.25rem;
+  background-color: #f2f7f5;
+  margin-bottom: 2rem;
+}
+</style>
