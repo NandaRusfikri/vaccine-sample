@@ -120,6 +120,16 @@
 </template>
 <script>
 export default {
+  middleware({ store, redirect, app }) {
+    if (app.$cookies.get("mahasiswa") == undefined) {
+      return redirect("/login");
+    } else if (app.$cookies.get("biodata") !== undefined) {
+      return redirect("/place");
+    }
+
+    console.log("middleware login", store.state.user);
+    console.log("cookie", app.$cookies.get("mahasiswa"));
+  },
   data() {
     return {
       activePicker: null,
@@ -132,7 +142,6 @@ export default {
       snackbar: false,
       message: null,
       Register: {
-        Company: { CompanyName: null, CompanyType: null },
         User: { Name: null, Email: null, NIK: [], Phone: null }
       },
       rules: {
@@ -145,7 +154,10 @@ export default {
       passRules: [v => !!v || "Password wajib diisi"]
     };
   },
-  async created() {},
+  async created() {
+    var mahasiswa = this.$cookies.get("mahasiswa");
+    this.Register.User.Name = mahasiswa.nama;
+  },
   mounted() {},
   methods: {
     save(date) {
@@ -168,7 +180,7 @@ export default {
         this.$cookies.set("biodata", biodata);
 
         this.loading = false;
-        this.$router.replace("/skrining");
+        this.$router.replace("/place");
       }
     }
   },

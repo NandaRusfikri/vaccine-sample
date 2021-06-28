@@ -2,15 +2,17 @@
   <v-app app :style="{ background: $vuetify.theme.themes[theme].background }">
     <v-row fill-height align="center" justify="center">
       <v-card
-        max-width="500px"
+        min-width="400px"
         class="mx-auto rounded-lg"
         hover
         :loading="loading"
       >
         <v-toolbar color="white" flat>
           <v-spacer />
-          <v-toolbar-title class="text-center"
-            >Sign in with credentials</v-toolbar-title
+          <v-toolbar-title
+            class="text-center display-1 font-weight-black"
+            style="font-family: Comfortaa,sans-serif; font-Weight:300"
+            ><b>For Participant</b></v-toolbar-title
           >
           <v-spacer />
         </v-toolbar>
@@ -20,8 +22,10 @@
             <v-text-field
               outlined
               flat
-              dense
-              label="E-mail Address"
+              label="NPM"
+              placeholder="Nomor Pokok Mahasiswa"
+              persistent-hint
+              hint="Nomor Pokok Mahasiswa"
               name="npm"
               v-model="npm"
               :rules="npmRules"
@@ -37,7 +41,6 @@
               name="password"
               label="Password"
               outlined
-              dense
               v-model="password"
               @click:append="show4 = !show4"
             ></v-text-field>
@@ -51,17 +54,20 @@
             color="primary"
             :disabled="loading"
             dark
+            large
             @click="Login"
             >Sign In</v-btn
           >
           <v-spacer />
         </v-card-actions>
         <v-card-actions>
-          <!-- <v-btn class="caption" text to="/forgot_password"
+          <v-btn class="caption" @click="FuncForgetPassowrd()" text
             >Forget Password?</v-btn
-          > -->
+          >
           <v-spacer />
-          <v-btn class="caption" text to="/register">Create New Account</v-btn>
+          <v-btn class="caption" @click="FuncRegister()" text
+            >Create New Account</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-row>
@@ -70,16 +76,158 @@
 
 <script>
 export default {
+  middleware({ store, redirect, app }) {
+    if (app.$cookies.get("mahasiswa") !== undefined) {
+      return redirect("/register");
+    }
+    console.log("cookie login", app.$cookies.get("mahasiswa"));
+    console.log("middleware login", store.state.user);
+  },
   name: "login",
+  layout: "blank",
   data() {
     return {
       mahasiswa: [
-        { nama: "Nanda", npm: 201943501887 },
-        { nama: "Safarudin Alwi Prayogo", npm: 202043579059 }
+        {
+          nama: "Ajeng Larasati ",
+          npm: 201943501949
+        },
+        {
+          nama: "Sindy Silvya",
+          npm: 201943502024
+        },
+        {
+          nama: " Andri Ardiansyah",
+          npm: 201943501899
+        },
+        {
+          nama: "Risky Muhamad",
+          npm: 201943502061
+        },
+        {
+          nama: "Rendi Gunawan",
+          npm: 201943502022
+        },
+        {
+          nama: "Muhammad Ananda Rusfikri",
+          npm: 201943501887
+        },
+        {
+          nama: "Inka Bunga Pertiwi",
+          npm: 201943502068
+        },
+        {
+          nama: "Fetra Ela Rahmah",
+          npm: 201943502001
+        },
+        {
+          nama: "Fariz Dwi Prayitno",
+          npm: 201943501912
+        },
+        {
+          nama: "Rahmat Irfanudin",
+          npm: 201943501999
+        },
+        {
+          nama: "Muhammad Rizki Fadil",
+          npm: 201943502072
+        },
+        {
+          nama: "Niluh Chintya Rizkiyana",
+          npm: 201943501955
+        },
+        {
+          nama: "Pratama Hadi Saputra",
+          npm: 201943501894
+        },
+        {
+          nama: "Almathari",
+          npm: 202043579043
+        },
+        {
+          nama: "Fahrul Rozi",
+          npm: 201943502031
+        },
+        {
+          nama: "Khrisna Adi S",
+          npm: 201943502053
+        },
+        {
+          nama: "Irfan solehudin",
+          npm: 201943501997
+        },
+        {
+          nama: "Hanif Art Swendho",
+          npm: 201943502069
+        },
+        {
+          nama: "Ismarianto",
+          npm: 201943579152
+        },
+        {
+          nama: "Fathi Hamid",
+          npm: 201943501994
+        },
+        {
+          nama: "Doddy Al Fattah",
+          npm: 201943502041
+        },
+        {
+          nama: "Muhamad Riyadh",
+          npm: 201943502050
+        },
+        {
+          nama: "Muhammad Fajar Septiawan",
+          npm: 201543501647
+        },
+        {
+          nama: "Aditya Permata restu",
+          npm: 201943502018
+        },
+        {
+          nama: "Ali Zaid Sa'ari",
+          npm: 201943501962
+        },
+        {
+          nama: "Thufaila Hasna",
+          npm: 201943501927
+        },
+        {
+          nama: "Satrio Wibisono",
+          npm: 201943501934
+        },
+        {
+          nama: "Wardoyo",
+          npm: 201943502006
+        },
+        {
+          nama: "Lani Oktofiyanto",
+          npm: 201943502005
+        },
+        {
+          nama: "Rama lana komara",
+          npm: 201943502066
+        },
+        {
+          nama: "Ade Fadel Amirudin",
+          npm: 201943502074
+        },
+        {
+          nama: "Bayu Rahmadani",
+          npm: 201943502073
+        },
+        {
+          nama: "Safarudin Alwi Prayogo",
+          npm: 202043579059
+        },
+        {
+          nama: "Aditya Prayoga",
+          npm: 201943502046
+        }
       ],
       show4: false,
       loading: false,
-      eula: true,
+
       npm: null,
       password: null,
       color: { snackbar: "" },
@@ -90,21 +238,28 @@ export default {
       passRules: [v => !!v || "Password wajib diisi"]
     };
   },
-  mounted() {
-
-
-    this.test(2, "four");
-  },
+  mounted() {},
 
   methods: {
-    test(d, s) {
-      const ayam = ["one", "two", "three", "four", "five"];
-      for (let i = 1; i < ayam.length; i++) {
-        if (ayam[i] == s) {
-          console.log("hasil",(i+1)*d)
-        }
-      }
+    FuncForgetPassowrd() {
+      let snackbar = {
+        color: "warning",
+        message: "Password Sama Dengan NPM",
+        enabled: true
+      };
+
+      this.$store.commit("SET_SNACKBAR", snackbar);
     },
+    FuncRegister() {
+      let snackbar = {
+        color: "warning",
+        message: "Harap Hubungi Panitia Penyelenggara",
+        enabled: true
+      };
+
+      this.$store.commit("SET_SNACKBAR", snackbar);
+    },
+
     async Login({ commit }) {
       this.loading = true;
 
@@ -130,7 +285,6 @@ export default {
       ) {
         this.$cookies.set("mahasiswa", this.mahasiswa[exist]);
         this.$store.commit("SET_USER", this.mahasiswa[exist]);
-        //     this.$store.commit("SET_TOKEN", response.data.token);
         this.$router.push("/register");
       } else {
         let snackbar = {
@@ -143,34 +297,6 @@ export default {
       }
 
       this.loading = false;
-
-      // this.$req
-      //   .post("api/user/v1/user/signin", formData)
-      //   .then(response => {
-      //     this.loading = false;
-      //     var ayam = JSON.stringify(response.data);
-
-      //     this.$cookies.set("user", response.data);
-      //     this.$cookies.set("token", response.data.token);
-
-      //     // window.localStorage.setItem("user", JSON.stringify(response.data));
-      //     // window.localStorage.setItem("token", response.data.token);
-
-      //     this.$store.commit("SET_USER", response.data);
-      //     this.$store.commit("SET_TOKEN", response.data.token);
-      //     this.$router.push("/dashboard");
-      //     //  this.$router.replace("/admin");
-      //   })
-      //   .catch(error => {
-      //     this.loading = false;
-      //     let snackbar = {
-      //       color: "error",
-      //       message: error.response.data.api_message,
-      //       enabled: true
-      //     };
-
-      //     this.$store.commit("SET_SNACKBAR", snackbar);
-      //   });
     }
   },
   computed: {

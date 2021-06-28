@@ -12,10 +12,45 @@
       >
     </v-toolbar> -->
 
-
     <v-row align="center" justify="center">
+      <v-col cols="12" md="7" sm="7">
+       <v-card class="pa-10" flat :color="$vuetify.theme.themes[theme].background">
+          <h1 style="font-family: Comfortaa,sans-serif; font-size:44px">
+            #Ayo Berdamai Dengan Virus Corona
+          </h1>
+          <v-row>
+            <v-col cols="12" md="6" sm="6">
+              <v-card flat :color="$vuetify.theme.themes[theme].background">
+                <v-card-title><b>For Administrator</b></v-card-title>
+                <v-card-text
+                  >Bergabung menjadi relawan vaksinasi covid 19 selamatkan orang
+                  tercinta selamatkan Indonesia.</v-card-text
+                >
+                <v-card-actions>
+                  <v-btn block outlined color="primary">Start Help People </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+            <v-col cols="12" md="6" sm="6">
+              <v-card flat :color="$vuetify.theme.themes[theme].background">
+                <v-card-title><b>For Participant </b></v-card-title>
+                <v-card-text
+                  >Ayo ikut program Vaksinasi dan ciptakan Herd Immunity. Hidup
+                  sehat mudah cari kerja.
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn block color="primary" @click="$router.push('/login')" >Sign Up </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="5" sm="5">
+        <v-img src="jaga_jarak.svg"></v-img>
+      </v-col>
 
-      <v-col cols="12" md="11" sm="11">
+      <!-- <v-col cols="12" md="11" sm="11">
         <v-card flat class="rounded-lg">
           <v-toolbar dense flat>
             <b>Pilih Lokasi Vaksinasi</b>
@@ -75,10 +110,8 @@
             </v-col>
           </v-row>
         </v-card>
-      </v-col>
+      </v-col> -->
     </v-row>
-
-
   </div>
 </template>
 <script>
