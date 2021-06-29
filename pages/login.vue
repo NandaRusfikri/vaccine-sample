@@ -22,14 +22,14 @@
             <v-text-field
               outlined
               flat
-              label="NPM"
-              placeholder="Nomor Pokok Mahasiswa"
+              label="Username"
+              placeholder="Username"
               persistent-hint
-              hint="Nomor Pokok Mahasiswa"
+              hint="Username"
               name="npm"
               v-model="npm"
               :rules="npmRules"
-              prepend-inner-icon="mdi-npm"
+              prepend-inner-icon="mdi-account"
               type="text"
             />
 
@@ -234,7 +234,7 @@ export default {
       snackbar: false,
       message: null,
       response: null,
-      npmRules: [v => !!v || "npm wajib diisi"],
+      npmRules: [v => !!v || "username wajib diisi"],
       passRules: [v => !!v || "Password wajib diisi"]
     };
   },
