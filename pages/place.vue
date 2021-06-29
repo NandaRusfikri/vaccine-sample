@@ -91,9 +91,91 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog max-width="700px" v-model="dialog_skrining">
+      <v-card class="rounded-lg">
+        <v-toolbar flat dense>
+          <v-toolbar-title dark
+            ><b>Skrining Vaksinasi COVID-19* </b></v-toolbar-title
+          >
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog_skrining = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+
+        <v-card-text>
+          <v-data-table
+            :headers="headers"
+            :items="skrining"
+            hide-default-footer
+          >
+            <!-- <v-radio-group v-model=""></v-radio-group> -->
+            <template v-slot:item.yes="{ item }">
+              <v-icon
+                v-if="!item.yes"
+                @click="
+                  (item.yes = true),
+                    (item.no = false),
+                    (item.answer = 'Y'),
+                    FuncValidSkrining()
+                "
+                >mdi-checkbox-blank-outline</v-icon
+              >
+              <v-icon
+                v-if="item.yes"
+                @click="
+                  (item.yes = false), (item.answer = null), FuncValidSkrining()
+                "
+                >mdi-checkbox-marked</v-icon
+              >
+            </template>
+            <template v-slot:item.no="{ item }">
+              <v-icon
+                v-if="!item.no"
+                @click="
+                  (item.no = true),
+                    (item.yes = false),
+                    (item.answer = 'N'),
+                    FuncValidSkrining()
+                "
+                >mdi-checkbox-blank-outline</v-icon
+              >
+              <v-icon
+                v-if="item.no"
+                @click="
+                  (item.no = false), (item.answer = null), FuncValidSkrining()
+                "
+                >mdi-checkbox-marked</v-icon
+              >
+            </template>
+          </v-data-table>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            dense
+            small
+            outlined
+            @click="dialog_skrining = false"
+            color="primary"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            dense
+            :disabled="!validasi_skrining"
+            small
+            @click="FuncSaveSkrining()"
+            color="primary"
+          >
+            Send
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-row v-if="selected_place" align="center" justify="center">
       <v-col cols="12" md="2" sm="2">
-        <v-avatar  class="ma-3 center" size="200" tile>
+        <v-avatar class="ma-3 center" size="200" tile>
           <v-img src="qr-code.svg"></v-img>
         </v-avatar>
       </v-col>
@@ -110,7 +192,11 @@
           <v-card-subtitle class="py-0"
             >Lokasi : <b>{{ selected_place.place.title }}</b></v-card-subtitle
           >
-          <v-card-subtitle  class="py-0"> <span style="color:red"> Wajib Datang Sebelum Pukul 10:00 </span></v-card-subtitle>
+          <v-card-subtitle class="py-0">
+            <span style="color:red">
+              Wajib Datang Sebelum Pukul 10:00
+            </span></v-card-subtitle
+          >
         </v-card>
       </v-col>
     </v-row>
@@ -200,6 +286,70 @@ export default {
   // layout: "home",
   data() {
     return {
+      validasi_skrining: false,
+      skrining: [
+        {
+          nomor: 1,
+          question: "Apakah Anda pernah terkonfirmasi menderita COVID-19?",
+          yes: null,
+          no: null,
+          answer: null
+        },
+        {
+          nomor: 2,
+          question: "Apakah Anda sedang hamil atau menyusui?",
+          yes: null,
+          no: null,
+          answer: null
+        },
+        {
+          nomor: 3,
+          question:
+            "Apakah Anda mengalami gejala ISPA seperti batuk/pilek/sesak napas dalam 7 hari terakhir?",
+          yes: null,
+          no: null,
+          answer: null
+        },
+        {
+          nomor: 4,
+          question:
+            "Apakah ada anggota keluarga serumah yang kontak erat/suspek/konfirmasi/sedang dalam perawatan karena penyakit COVID-19?",
+          yes: null,
+          no: null,
+          answer: null
+        },
+        {
+          nomor: 5,
+          question:
+            "Apakah Anda memiliki riwayat alergi berat atau mengalami gejala sesak napas, bengkak dan kemerahan setelah divaksinasi COVID-19 sebelumnya?(pertanyaan untuk vaksinasi ke-2?",
+          yes: null,
+          no: null,
+          answer: null
+        },
+        {
+          nomor: 6,
+          question:
+            "Apakah Anda sedang mendapatkan terapi aktif jangka panjang terhadap penyakit kelainan darah?",
+          yes: null,
+          no: null,
+          answer: null
+        }
+      ],
+      headers: [
+        {
+          text: "No",
+          sortable: false,
+          value: "nomor"
+        },
+        {
+          text: "Pertanyaan",
+          sortable: false,
+          value: "question"
+        },
+        { text: "YA", sortable: false, value: "yes" },
+        { text: "TIDAK", sortable: false, value: "no" }
+      ],
+      dialog_skrining: true,
       biodata: null,
       selected_place: null,
       selected_item: null,
@@ -248,15 +398,52 @@ export default {
     };
   },
   methods: {
-    async FuchSavePlace(place) {
+    FuncValidSkrining() {
+      var question = 0;
+      for (let i = 0; i < this.skrining.length; i++) {
+        if (this.skrining[i].answer == null) {
+          question = question + 1;
+        }
+      }
+      question == 0
+        ? (this.validasi_skrining = true)
+        : (this.validasi_skrining = false);
+    },
+    async FuchSavePlace() {
+      var reverse = {};
+      console.log("skring ", this.$cookies.get("skrining"));
+      if (this.$cookies.get("skrining") == undefined) {
+        this.dialog_skrining = true;
+      } else {
+        reverse = {
+          place: this.selected_item,
+          antrian:
+            Math.floor(Math.random() * this.selected_item.target) +
+            this.selected_item.current
+        };
+        this.$cookies.set("reverse", reverse);
+        this.dialog_place = false;
+        let snackbar = {
+          color: "success",
+          message:
+            "Pendaftaran Berhasil Silahkan Mendatangi Tempat yang dipilih.",
+          enabled: true
+        };
 
+        this.$store.commit("SET_SNACKBAR", snackbar);
+
+        this.selected_place = reverse;
+      }
+    },
+    FuncSaveSkrining() {
+      this.$cookies.set("skrining", this.skrining);
       var reverse = {
         place: this.selected_item,
-        antrian: Math.floor(Math.random() * this.selected_item.target) + this.selected_item.current
-
+        antrian:
+          Math.floor(Math.random() * this.selected_item.target) +
+          this.selected_item.current
       };
       this.$cookies.set("reverse", reverse);
-      this.dialog_place = false;
 
       let snackbar = {
         color: "success",
@@ -269,8 +456,8 @@ export default {
 
       this.selected_place = reverse;
 
-      // this.loading = false;
-      // this.$router.replace("/place");
+      this.dialog_place = false;
+      this.dialog_skrining = false;
     }
   },
   created() {
@@ -279,6 +466,7 @@ export default {
     this.biodata = biodata;
     this.selected_place = reverse;
   },
+
   computed: {
     theme() {
       return this.$vuetify.theme.dark ? "dark" : "light";
