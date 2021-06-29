@@ -109,7 +109,7 @@ export default {
           npm: 201943502022
         },
         {
-          nama: "Muhammad Ananda Rusfikri",
+          nama: "NandaRusfikri",
           npm: 201943501887
         },
         {

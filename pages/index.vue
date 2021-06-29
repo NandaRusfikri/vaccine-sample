@@ -21,7 +21,7 @@
           <v-row>
             <v-col cols="12" md="6" sm="6">
               <v-card flat :color="$vuetify.theme.themes[theme].background">
-                <v-card-title><b>For Administrator</b></v-card-title>
+                <v-card-title><b>For Facilitator</b></v-card-title>
                 <v-card-text
                   >Bergabung menjadi relawan vaksinasi covid 19 selamatkan orang
                   tercinta selamatkan Indonesia.</v-card-text
@@ -39,7 +39,7 @@
                   sehat mudah cari kerja.
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn block color="primary" @click="$router.push('/login')" >Sign Up </v-btn>
+                  <v-btn block color="primary" @click="$router.push('/login')" >Sign In </v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>

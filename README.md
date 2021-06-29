@@ -2,11 +2,12 @@
 
 Click here to view the [demo](https://vaccine-sample.netlify.app/)
 
-![demo of blog](vaccine.jpg)
+![vaccine](vaccine.jpg)
+![skrining](skrining.jpg)
+![home](home.jpg)
 
 ## Login
-user 201943501887
-pass 201943501887
+user & pass 201943501887
 ## Build Setup
 
 ```bash

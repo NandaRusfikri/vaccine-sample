@@ -349,7 +349,7 @@ export default {
         { text: "YA", sortable: false, value: "yes" },
         { text: "TIDAK", sortable: false, value: "no" }
       ],
-      dialog_skrining: true,
+      dialog_skrining: false,
       biodata: null,
       selected_place: null,
       selected_item: null,
