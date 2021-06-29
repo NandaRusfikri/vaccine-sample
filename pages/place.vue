@@ -93,7 +93,7 @@
     </v-dialog>
     <v-row v-if="selected_place" align="center" justify="center">
       <v-col cols="12" md="2" sm="2">
-        <v-avatar class="ma-3 " size="200" tile>
+        <v-avatar  class="ma-3 center" size="200" tile>
           <v-img src="qr-code.svg"></v-img>
         </v-avatar>
       </v-col>

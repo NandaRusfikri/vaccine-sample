@@ -8,7 +8,7 @@
       :style="{ background: $vuetify.theme.themes[theme].background }"
     >
       <v-toolbar-title style="font-family: Comfortaa;font-weight: 800" class="ml-0 pl-4">
-        <b>E-Vaksin</b>
+        <b>Vaccine</b>
       </v-toolbar-title>
     </v-app-bar>
     <v-main>

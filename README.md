@@ -1,5 +1,8 @@
-# vaksin-online
+# Vaccine Sample
 
+Click here to view the [demo](https://vaccine-sample.netlify.app/)
+
+![demo of blog](https://github.com/NandaRusfikri/vaccine-sample/vaccine.jpg)
 ## Build Setup
 
 ```bash

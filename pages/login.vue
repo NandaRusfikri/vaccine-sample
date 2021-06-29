@@ -1,6 +1,6 @@
 <template>
   <v-app app :style="{ background: $vuetify.theme.themes[theme].background }">
-    <v-row fill-height align="center" justify="center">
+    <v-row class="ma-10" fill-height align="center" justify="center">
       <v-card
         min-width="400px"
         class="mx-auto rounded-lg"
