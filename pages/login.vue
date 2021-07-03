@@ -78,10 +78,9 @@
 export default {
   middleware({ store, redirect, app }) {
     if (app.$cookies.get("mahasiswa") !== undefined) {
-      return redirect("/register");
+      return redirect("/biodata");
     }
-    console.log("cookie login", app.$cookies.get("mahasiswa"));
-    console.log("middleware login", store.state.user);
+
   },
   name: "login",
   layout: "blank",
