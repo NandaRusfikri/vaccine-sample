@@ -22,83 +22,44 @@
               <v-text-field
                 outlined
                 flat
-                dense
                 label="Nama"
                 :rules="[rules.required]"
                 name="Nama"
-                v-model="Register.User.Name"
+                v-model="name"
                 prepend-inner-icon="mdi-account"
                 type="text"
               />
               <v-text-field
                 outlined
                 flat
-                dense
-                label="E-mail Address"
-                name="Email"
-                v-model="Register.User.Email"
-                prepend-inner-icon="mdi-email"
+                label="Username"
+                placeholder="Username"
+                persistent-hint
+                hint="Username"
+                name="npm"
+                v-model="username"
+                :rules="npmRules"
+                prepend-inner-icon="mdi-account"
                 type="text"
               />
 
               <v-text-field
+                :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
+                prepend-inner-icon="mdi-key"
+                :rules="passRules"
+                :type="show4 ? 'text' : 'password'"
+                name="password"
+                label="Password"
                 outlined
-                flat
-                dense
-                :rules="[rules.required]"
-                label="Telepon"
-                name="Telepon"
-                v-model="Register.User.Phone"
-                prepend-inner-icon="mdi-phone"
-                type="text"
-              />
-              <v-text-field
-                outlined
-                flat
-                dense
-                :rules="[rules.required]"
-                label="NIK"
-                name="NIK"
-                v-model="Register.User.NIK"
-                prepend-inner-icon="mdi-card"
-                type="text"
-              />
-              <v-menu
-                ref="menu"
-                v-model="menu"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="date"
-                    label="Tanggal Lahir"
-                    prepend-inner-icon="mdi-calendar"
-                    readonly
-                    outlined
-                    :rules="[rules.required]"
-                    flat
-                    dense
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="date"
-                  :active-picker.sync="activePicker"
-                  max="2015-01-01"
-                  min="1950-01-01"
-                  @change="save"
-                ></v-date-picker>
-              </v-menu>
+                v-model="password"
+                @click:append="show4 = !show4"
+              ></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-btn
               color="primary"
-              :disabled="!valid || loading"
+              :disabled="!valid || !name || !username || !password"
               block
               @click="onSubmit"
               >Daftar</v-btn
@@ -107,7 +68,7 @@
 
           <v-card-text align="center">
             <v-card-subtitle dark
-              >Dengan masuk di E-Vaksin, saya setuju dengan</v-card-subtitle
+              >Dengan Daftar di E-Vaksin, saya setuju dengan</v-card-subtitle
             >
 
             <!-- <router-link to="/faq"> Kebijakan Privasi.</router-link> -->
@@ -120,20 +81,22 @@
 </template>
 <script>
 export default {
-  middleware({ store, redirect, app }) {
-    if (app.$cookies.get("mahasiswa") == undefined) {
-      return redirect("/login");
-    } else if (app.$cookies.get("biodata") !== undefined) {
-      return redirect("/place");
-    }
+  // middleware({ store, redirect, app }) {
+  //   if (app.$cookies.get("mahasiswa") == undefined) {
+  //     return redirect("/login");
+  //   } else if (app.$cookies.get("biodata") !== undefined) {
+  //     return redirect("/place");
+  //   }
 
-    console.log("middleware login", store.state.user);
-    console.log("cookie", app.$cookies.get("mahasiswa"));
-  },
+  //   console.log("middleware login", store.state.user);
+  //   console.log("cookie", app.$cookies.get("mahasiswa"));
+  // },
   data() {
     return {
       activePicker: null,
       date: null,
+      username: null,
+      password: null,
       menu: false,
       loading: false,
       valid: false,
@@ -141,54 +104,34 @@ export default {
       color: { snackbar: "" },
       snackbar: false,
       message: null,
-      Register: {
-        User: { Name: null, Email: null, NIK: [], Phone: null }
-      },
+      name: null,
+      show4: false,
+      npmRules: [v => !!v || "username wajib diisi"],
+      passRules: [v => !!v || "Password wajib diisi"],
       rules: {
         required: value => !!value || "Field Required.",
         min: v => v.length >= 8 || "Min 8 characters",
         passMatch: v => v == this.password || "password you entered don't match"
       },
-      DataCompanyType: [],
       emailRules: [v => !!v || "Email wajib diisi"],
       passRules: [v => !!v || "Password wajib diisi"]
     };
   },
-  async created() {
-    var mahasiswa = this.$cookies.get("mahasiswa");
-    this.Register.User.Name = mahasiswa.nama;
-  },
+  async created() {},
   mounted() {},
   methods: {
-    save(date) {
-      this.$refs.menu.save(date);
-    },
-
     async onSubmit() {
-      this.$refs.form.validate();
-      if (this.valid) {
-        this.loading = true;
-
-        var biodata = {
-          nama: this.Register.User.Name,
-          tgl_lahir: this.date,
-          phone: this.Register.User.Phone,
-          email: this.Register.User.email,
-          NIK: this.Register.User.NIK
-        };
-
-        this.$cookies.set("biodata", biodata);
-
-        this.loading = false;
-        this.$router.replace("/place");
-      }
+      var daftar = {
+        username: this.username,
+        password: this.password,
+        nama: this.name
+      };
+      this.$cookies.set("mahasiswa", daftar);
+      this.$store.commit("SET_USER", daftar);
+      this.$router.push("/biodata");
     }
   },
-  watch: {
-    menu(val) {
-      val && setTimeout(() => (this.activePicker = "YEAR"));
-    }
-  },
+
   computed: {
     theme() {
       return this.$vuetify.theme.dark ? "dark" : "light";

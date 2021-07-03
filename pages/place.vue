@@ -278,7 +278,7 @@ export default {
     // }
 
     if (app.$cookies.get("biodata") == undefined) {
-      return redirect("/register");
+      return redirect("/biodata");
     }
     //  console.log("cookie place",app.$cookies.get("biodata"))
     // console.log("middleware place",store.state.user)

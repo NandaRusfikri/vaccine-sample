@@ -14,7 +14,11 @@
 
     <v-row align="center" justify="center">
       <v-col cols="12" md="7" sm="7">
-       <v-card class="pa-10" flat :color="$vuetify.theme.themes[theme].background">
+        <v-card
+          class="pa-10"
+          flat
+          :color="$vuetify.theme.themes[theme].background"
+        >
           <h1 style="font-family: Comfortaa,sans-serif; font-size:44px">
             #Ayo Berdamai Dengan Virus Corona
           </h1>
@@ -27,7 +31,9 @@
                   tercinta selamatkan Indonesia.</v-card-text
                 >
                 <v-card-actions>
-                  <v-btn block outlined color="primary">Start Help People </v-btn>
+                  <v-btn block outlined color="primary"
+                    >Start Help People
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
@@ -39,7 +45,9 @@
                   sehat mudah cari kerja.
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn block color="primary" @click="$router.push('/login')" >Sign In </v-btn>
+                  <v-btn block color="primary" @click="$router.push('/login')"
+                    >Sign In
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
@@ -49,79 +57,11 @@
       <v-col cols="12" md="5" sm="5">
         <v-img src="jaga_jarak.svg"></v-img>
       </v-col>
-
-      <!-- <v-col cols="12" md="11" sm="11">
-        <v-card flat class="rounded-lg">
-          <v-toolbar dense flat>
-            <b>Pilih Lokasi Vaksinasi</b>
-            <v-spacer />
-            <v-select
-              style="maxWidth:130px"
-              hide-details
-              outlined
-              :items="periode"
-              dense
-              v-model="selected_periode"
-              single-line
-            ></v-select>
-          </v-toolbar>
-          <v-row class="mx-auto pt-2">
-            <v-col
-              v-for="item in assignment"
-              :key="item.title"
-              cols="12"
-              md="3"
-              sm="3"
-            >
-              <v-card hover
-                class="rounded-lg"
-                :color="item.current >= item.target ?   '#FFF1F1' : '#EAEFF1'"
-              >
-                <v-card-subtitle class="pb-0"
-                  ><b>{{ item.title }}</b></v-card-subtitle
-                >
-                <v-card-subtitle class="pt-0">{{ item.desc }}</v-card-subtitle>
-                <v-card-text>
-                  <div class="d-flex " align="center" justify="center">
-                    <v-progress-linear
-                      rounded
-                      class="mr-2"
-                      :color="
-                        item.current >= item.target ? '#FF7C7C' : 'primary'
-                      "
-                      height="12"
-                      :value="(100 / item.target) * item.current"
-                    >
-                      <template v-slot:default="{ value }">
-                        <div style="color:white">
-                          <strong>{{ item.current }}</strong>
-                        </div>
-                      </template></v-progress-linear
-                    >
-                    <span style="font-size:12px"
-                      ><b> {{ Math.ceil((100 / item.target) * item.current) }}% </b></span
-                    >
-                  </div>
-                   <span style="font-size:12px"
-                      >Kuota:  <b>{{ item.target }}/Hari</b></span
-                    >
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col> -->
     </v-row>
   </div>
 </template>
 <script>
 export default {
-  // middleware({ store, redirect }) {
-  //   if (store.state.user == undefined) {
-  //     return redirect("/login");
-  //   }
-  // },
-  // layout: "home",
   data() {
     return {
       assignment: [
@@ -229,6 +169,49 @@ export default {
         }
       ]
     };
+  },
+  mounted() {
+    var task = [20 ,7 ,10 ,8 ,10 ,27 ,2 ,3 ,10 ,5];
+    // this.server(task, 60 );
+
+    this.almost(650)
+  },
+  methods: {
+    almost(n){
+      var total = 0
+      for (let i = 1; i < n; i++) {
+       if (n % i == 0) {
+         total = total+i
+       }
+
+      }
+      if (total == n) {
+        console.log(n ,"perpect")
+      }else if (total - n >= 2) {
+        console.log(n ,"almost perpect")
+      }else{
+        console.log(n ,"not perfect")
+      }
+      console.log("total ",total)
+
+    },
+    server(task, t) {
+      var time = 0;
+      var task_complate = 0;
+      for (let i = 0; i < task.length; i++) {
+
+        if (task[i] + time < t) {
+          console.log("task ",task[i] + time)
+
+          time = time + task[i];
+          console.log("time ",time)
+        } else {
+          task_complate = i ;
+          break;
+        }
+      }
+      console.log("task_complate ", task_complate);
+    }
   },
   computed: {
     theme() {

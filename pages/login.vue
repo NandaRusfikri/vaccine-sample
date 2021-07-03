@@ -26,9 +26,9 @@
               placeholder="Username"
               persistent-hint
               hint="Username"
-              name="npm"
-              v-model="npm"
-              :rules="npmRules"
+              name="username"
+              v-model="username"
+              :rules="usernameRules"
               prepend-inner-icon="mdi-account"
               type="text"
             />
@@ -89,152 +89,38 @@ export default {
     return {
       mahasiswa: [
         {
-          nama: "Ajeng Larasati ",
-          npm: 201943501949
+          username: 201943502024,
+          password: 201943502024,
+          nama: "Sindy Silvya"
+        },
+
+        {
+          username: 201943502022,
+          password: 201943502022,
+          nama: "Rendi Gunawan"
         },
         {
-          nama: "Sindy Silvya",
-          npm: 201943502024
+          username: 201943501887,
+          password: 201943501887,
+          nama: "NandaRusfikri"
         },
+
         {
-          nama: " Andri Ardiansyah",
-          npm: 201943501899
-        },
-        {
-          nama: "Risky Muhamad",
-          npm: 201943502061
-        },
-        {
-          nama: "Rendi Gunawan",
-          npm: 201943502022
-        },
-        {
-          nama: "NandaRusfikri",
-          npm: 201943501887
-        },
-        {
-          nama: "Inka Bunga Pertiwi",
-          npm: 201943502068
-        },
-        {
-          nama: "Fetra Ela Rahmah",
-          npm: 201943502001
-        },
-        {
-          nama: "Fariz Dwi Prayitno",
-          npm: 201943501912
-        },
-        {
-          nama: "Rahmat Irfanudin",
-          npm: 201943501999
-        },
-        {
-          nama: "Muhammad Rizki Fadil",
-          npm: 201943502072
-        },
-        {
-          nama: "Niluh Chintya Rizkiyana",
-          npm: 201943501955
-        },
-        {
-          nama: "Pratama Hadi Saputra",
-          npm: 201943501894
-        },
-        {
-          nama: "Almathari",
-          npm: 202043579043
-        },
-        {
-          nama: "Fahrul Rozi",
-          npm: 201943502031
-        },
-        {
-          nama: "Khrisna Adi S",
-          npm: 201943502053
-        },
-        {
-          nama: "Irfan solehudin",
-          npm: 201943501997
-        },
-        {
-          nama: "Hanif Art Swendho",
-          npm: 201943502069
-        },
-        {
-          nama: "Ismarianto",
-          npm: 201943579152
-        },
-        {
-          nama: "Fathi Hamid",
-          npm: 201943501994
-        },
-        {
-          nama: "Doddy Al Fattah",
-          npm: 201943502041
-        },
-        {
-          nama: "Muhamad Riyadh",
-          npm: 201943502050
-        },
-        {
-          nama: "Muhammad Fajar Septiawan",
-          npm: 201543501647
-        },
-        {
-          nama: "Aditya Permata restu",
-          npm: 201943502018
-        },
-        {
-          nama: "Ali Zaid Sa'ari",
-          npm: 201943501962
-        },
-        {
-          nama: "Thufaila Hasna",
-          npm: 201943501927
-        },
-        {
-          nama: "Satrio Wibisono",
-          npm: 201943501934
-        },
-        {
-          nama: "Wardoyo",
-          npm: 201943502006
-        },
-        {
-          nama: "Lani Oktofiyanto",
-          npm: 201943502005
-        },
-        {
-          nama: "Rama lana komara",
-          npm: 201943502066
-        },
-        {
-          nama: "Ade Fadel Amirudin",
-          npm: 201943502074
-        },
-        {
-          nama: "Bayu Rahmadani",
-          npm: 201943502073
-        },
-        {
-          nama: "Safarudin Alwi Prayogo",
-          npm: 202043579059
-        },
-        {
-          nama: "Aditya Prayoga",
-          npm: 201943502046
+          username: 201943502005,
+          password: 201943502005,
+          nama: "Lani Oktofiyanto"
         }
       ],
       show4: false,
       loading: false,
 
-      npm: null,
+      username: null,
       password: null,
       color: { snackbar: "" },
       snackbar: false,
       message: null,
       response: null,
-      npmRules: [v => !!v || "username wajib diisi"],
+      usernameRules: [v => !!v || "username wajib diisi"],
       passRules: [v => !!v || "Password wajib diisi"]
     };
   },
@@ -244,20 +130,15 @@ export default {
     FuncForgetPassowrd() {
       let snackbar = {
         color: "warning",
-        message: "Password Sama Dengan NPM",
+        message: "Password Sama Dengan username",
         enabled: true
       };
 
       this.$store.commit("SET_SNACKBAR", snackbar);
     },
     FuncRegister() {
-      let snackbar = {
-        color: "warning",
-        message: "Harap Hubungi Panitia Penyelenggara",
-        enabled: true
-      };
-
-      this.$store.commit("SET_SNACKBAR", snackbar);
+      console.log("ayams")
+        this.$router.push("/register");
     },
 
     async Login({ commit }) {
@@ -265,7 +146,7 @@ export default {
 
       var exist = null;
       for (let i = 0; i < this.mahasiswa.length; i++) {
-        if (this.mahasiswa[i].npm == this.npm) {
+        if (this.mahasiswa[i].username == this.username) {
           exist = i;
         }
       }
@@ -273,19 +154,19 @@ export default {
       if (exist == null) {
         let snackbar = {
           color: "error",
-          message: "NPM tidak ada",
+          message: "username tidak ada",
           enabled: true
         };
 
         this.$store.commit("SET_SNACKBAR", snackbar);
       } else if (
         exist !== null &&
-        this.mahasiswa[exist].npm == this.npm &&
-        this.mahasiswa[exist].npm == this.password
+        this.mahasiswa[exist].username == this.username &&
+        this.mahasiswa[exist].username == this.password
       ) {
         this.$cookies.set("mahasiswa", this.mahasiswa[exist]);
         this.$store.commit("SET_USER", this.mahasiswa[exist]);
-        this.$router.push("/register");
+        this.$router.push("/biodata");
       } else {
         let snackbar = {
           color: "warning",
