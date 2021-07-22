@@ -29,6 +29,7 @@
                 v-model="Register.User.Name"
                 prepend-inner-icon="mdi-account"
                 type="text"
+                disabled
               />
               <v-text-field
                 outlined
@@ -45,9 +46,10 @@
                 outlined
                 flat
                 dense
-                :rules="[rules.required]"
+                :rules="[rules.required,rules.min]"
                 label="Telepon"
                 name="Telepon"
+                 @keypress="isNumber($event)"
                 v-model="Register.User.Phone"
                 prepend-inner-icon="mdi-phone"
                 type="text"
@@ -62,6 +64,7 @@
                 v-model="Register.User.NIK"
                 prepend-inner-icon="mdi-card"
                 type="text"
+                disabled
               />
               <v-menu
                 ref="menu"
@@ -98,7 +101,7 @@
           <v-card-actions>
             <v-btn
               color="primary"
-              :disabled="!valid || loading"
+              :disabled="Register.User.Phone.length <= 9 || Register.User.Email <= 5 || date <= 4"
               block
               @click="onSubmit"
               >Daftar</v-btn
@@ -142,11 +145,11 @@ export default {
       snackbar: false,
       message: null,
       Register: {
-        User: { Name: null, Email: null, NIK: [], Phone: null }
+        User: { Name: null, Email: "", NIK: [], Phone: "" }
       },
       rules: {
         required: value => !!value || "Field Required.",
-        min: v => v.length >= 8 || "Min 8 characters",
+        min: v => v.length >= 10 || "Min 11 characters",
         passMatch: v => v == this.password || "password you entered don't match"
       },
       DataCompanyType: [],
@@ -156,10 +159,24 @@ export default {
   },
   async created() {
     var mahasiswa = this.$cookies.get("mahasiswa");
-    this.Register.User.Name = mahasiswa.nama;
+    this.Register.User.Name = mahasiswa.name;
+    this.Register.User.NIK = mahasiswa.nik;
   },
   mounted() {},
   methods: {
+     isNumber: function(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
     save(date) {
       this.$refs.menu.save(date);
     },

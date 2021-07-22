@@ -2,48 +2,52 @@
   <v-app app :style="{ background: $vuetify.theme.themes[theme].background }">
     <v-row class="ma-10" fill-height align="center" justify="center">
       <v-card
-        min-width="400px"
+        max-width="400px"
         class="mx-auto rounded-lg"
         hover
         :loading="loading"
       >
-        <v-toolbar color="white" flat>
-          <v-spacer />
-          <v-toolbar-title
-            class="text-center display-1 font-weight-black"
-            style="font-family: Comfortaa,sans-serif; font-Weight:300"
-            ><b>For Participant</b></v-toolbar-title
-          >
-          <v-spacer />
-        </v-toolbar>
+        <v-list-item three-line>
+          <v-list-item-content>
+            <v-list-item-subtitle class="text-h6" style="color:black"
+              >Lindungi diri dan sekitar dengan vaksinasi
+              COVID-19</v-list-item-subtitle
+            >
+            <v-list-item-subtitle
+              >Segera daftarkan diri Anda!</v-list-item-subtitle
+            >
+            <v-list-item-subtitle
+              >Terbuka untuk seluruh warga berusia 12 tahun ke
+              atas.</v-list-item-subtitle
+            >
+          </v-list-item-content>
+        </v-list-item>
 
         <v-card-text>
           <v-form>
             <v-text-field
               outlined
               flat
-              label="Username"
-              placeholder="Username"
-              persistent-hint
-              hint="Username"
-              name="username"
-              v-model="username"
-              :rules="usernameRules"
-              prepend-inner-icon="mdi-account"
+              placeholder="Masukan NIK Anda"
+
+              hint="Masukan NIK Anda"
+              name="nik"
+              v-model="nik"
+              :rules="nikRules"
               type="text"
             />
 
             <v-text-field
-              :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
-              prepend-inner-icon="mdi-key"
-              :rules="passRules"
-              :type="show4 ? 'text' : 'password'"
-              name="password"
-              label="Password"
               outlined
-              v-model="password"
-              @click:append="show4 = !show4"
-            ></v-text-field>
+              flat
+              placeholder="Nama Lengkap Sesuai KTP"
+
+              hint="Nama Lengkap Sesuai KTP"
+              name="name"
+              v-model="name"
+              :rules="nameRules"
+              type="text"
+            />
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -52,22 +56,22 @@
             class="rounded-lg"
             block
             color="primary"
-            :disabled="loading"
-            dark
+            :disabled="nik.length != 16 || name.length <= 3"
+
             large
             @click="Login"
-            >Sign In</v-btn
+            >Periksa</v-btn
           >
           <v-spacer />
         </v-card-actions>
         <v-card-actions>
-          <v-btn class="caption" @click="FuncForgetPassowrd()" text
+          <!-- <v-btn class="caption" @click="FuncForgetPassowrd()" text
             >Forget Password?</v-btn
-          >
+          > -->
           <v-spacer />
-          <v-btn class="caption" @click="FuncRegister()" text
+          <!-- <v-btn class="caption" @click="FuncRegister()" text
             >Create New Account</v-btn
-          >
+          > -->
         </v-card-actions>
       </v-card>
     </v-row>
@@ -80,7 +84,6 @@ export default {
     if (app.$cookies.get("mahasiswa") !== undefined) {
       return redirect("/biodata");
     }
-
   },
   name: "login",
   layout: "blank",
@@ -88,39 +91,39 @@ export default {
     return {
       mahasiswa: [
         {
-          username: 201943502024,
+          nik: 3174123456781231,
           password: 201943502024,
-          nama: "Sindy Silvya"
+          name: "Sindy Silvya"
         },
 
         {
-          username: 201943502022,
+          nik: 3174123456781232,
           password: 201943502022,
-          nama: "Rendi Gunawan"
+          name: "Herman Setia"
         },
         {
-          username: 201943501887,
+          nik: 3174123456781233,
           password: 201943501887,
-          nama: "NandaRusfikri"
+          name: "NandaRusfikri"
         },
 
         {
-          username: 201943502005,
+          nik: 3174123456781234,
           password: 201943502005,
-          nama: "Lani Oktofiyanto"
+          name: "Lani Oktofiyanto"
         }
       ],
       show4: false,
       loading: false,
 
-      username: null,
-      password: null,
+      nik: "",
+      name: "",
       color: { snackbar: "" },
       snackbar: false,
       message: null,
       response: null,
-      usernameRules: [v => !!v || "username wajib diisi"],
-      passRules: [v => !!v || "Password wajib diisi"]
+      nikRules: [v => !!v || "NIK wajib diisi"],
+      nameRules: [v => !!v || "Nama wajib diisi"]
     };
   },
   mounted() {},
@@ -129,15 +132,15 @@ export default {
     FuncForgetPassowrd() {
       let snackbar = {
         color: "warning",
-        message: "Password Sama Dengan username",
+        message: "Password Sama Dengan nik",
         enabled: true
       };
 
       this.$store.commit("SET_SNACKBAR", snackbar);
     },
     FuncRegister() {
-      console.log("ayams")
-        this.$router.push("/register");
+      console.log("ayams");
+      this.$router.push("/register");
     },
 
     async Login({ commit }) {
@@ -145,7 +148,7 @@ export default {
 
       var exist = null;
       for (let i = 0; i < this.mahasiswa.length; i++) {
-        if (this.mahasiswa[i].username == this.username) {
+        if (this.mahasiswa[i].nik == this.nik) {
           exist = i;
         }
       }
@@ -153,15 +156,14 @@ export default {
       if (exist == null) {
         let snackbar = {
           color: "error",
-          message: "username tidak ada",
+          message: "NIK tidak Terdaftar",
           enabled: true
         };
 
         this.$store.commit("SET_SNACKBAR", snackbar);
       } else if (
         exist !== null &&
-        this.mahasiswa[exist].username == this.username &&
-        this.mahasiswa[exist].username == this.password
+        this.mahasiswa[exist].nik == this.nik
       ) {
         this.$cookies.set("mahasiswa", this.mahasiswa[exist]);
         this.$store.commit("SET_USER", this.mahasiswa[exist]);
